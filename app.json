@@ -1,13 +1,14 @@
 {
   "expo": {
-    "name": "Koala",
-    "slug": "Koala",
-    "version": "1.0.0",
+    "name": "XBot",
+    "slug": "XBot",
+    "schema": "xbot",
+    "version": "1.1.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./src/assets/images/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./src/assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -15,16 +16,27 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.oscarmanas.xbot-ai-assistant",
+      "buildNumber": "4"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.oscarmanas.xbotaiassistant"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
-    }
+      "favicon": "./src/assets/images/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "1a93177f-3493-4a4f-a3ce-cc6a61dd3c03"
+      }
+    },
+    "plugins": [
+      "expo-localization"
+    ]
   }
 }
