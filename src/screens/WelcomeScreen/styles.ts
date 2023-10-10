@@ -1,16 +1,11 @@
 import { Dimensions, StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    resizeMode: "cover",
-  },
   container: {
-    flex: 1,
     justifyContent: 'space-between',
-    //alignItems: "center",
     backgroundColor: "#1C1C1E",
     paddingHorizontal: 20,
+    paddingVertical: 20
   },
   title: {
     marginTop: 60,

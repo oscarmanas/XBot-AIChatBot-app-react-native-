@@ -3,6 +3,7 @@ import i18n from 'i18n-js';
 import { View, Text, TouchableOpacity, Image, Pressable } from 'react-native';
 import { styles } from './styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ScrollView } from 'react-native';
 
 const WelcomeScreen = ({ navigation }) => {
   const handleNextPage = useCallback(async () => {
@@ -11,7 +12,7 @@ const WelcomeScreen = ({ navigation }) => {
   }, [navigation]);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={{ backgroundColor: "#1C1C1E"}} contentContainerStyle={styles.container}>
       <Text style={styles.title}>{i18n.t('iAm')}</Text>
       <Text style={styles.subtitle}>{i18n.t('presentation')}</Text>
       <Image resizeMode="contain" style={styles.images} source={require('../../assets/images/photo/photo_01.png')} />
@@ -30,7 +31,7 @@ const WelcomeScreen = ({ navigation }) => {
       <TouchableOpacity style={styles.button} onPress={handleNextPage}>
         <Text style={styles.buttonText}>{i18n.t('letUsBegin')}</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 
