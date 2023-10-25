@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
   },
   benefitsContainer: {
     marginVertical: 30,
-    alignItems: 'flex-start'
+    alignItems: "flex-start",
   },
   benefitText: {
     marginLeft: 6,

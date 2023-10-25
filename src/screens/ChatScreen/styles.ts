@@ -6,8 +6,8 @@ export const styles = StyleSheet.create({
     backgroundColor: "#0A0A0A",
   },
   composerTextInput: {
-    color: "#FFFFFF", // Texto en blanco
-    backgroundColor: "#333333", // Fondo gris oscuro para el input
+    color: "#FFFFFF",
+    backgroundColor: "#333333",
     borderRadius: 20,
     paddingTop: 10,
     paddingBottom: 5,
@@ -96,11 +96,11 @@ export const styles = StyleSheet.create({
     fontWeight: "500",
   },
   bubbleContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
+    flexDirection: "row",
+    alignItems: "flex-start",
   },
   heartIconContainer: {
-    position: 'absolute',
+    position: "absolute",
     top: -8,
     right: 370,
     borderRadius: 15,

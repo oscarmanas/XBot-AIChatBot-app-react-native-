@@ -14,13 +14,13 @@ export default function TermsScreen() {
       />
     );
   }
-  
+
   return (
     <WebView
       source={{ uri: "https://terms-conditions-xbot.carrd.co/" }}
       renderLoading={IndicatorLoadingView}
       startInLoadingState={true}
-      style={{backgroundColor:'black'}}
+      style={{ backgroundColor: 'black' }}
     />
   );
 }

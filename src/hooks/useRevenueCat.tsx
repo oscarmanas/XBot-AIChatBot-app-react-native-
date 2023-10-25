@@ -7,7 +7,7 @@ import Purchases, {
 } from "react-native-purchases";
 
 const APIKeys = {
-    apple: "appl_QlcRfBogDMuTsxbDgTYNfbifaRk",
+    //apple: "",
     //google: ""
 }
 
@@ -22,9 +22,9 @@ function useRevenueCat() {
     const [customerInfo, setCustomerInfo] = useState<CustomerInfo | null>(null);
 
     const isProMember =
-    customerInfo?.activeSubscriptions.includes(typeOfMembership.monthly) ||
-    customerInfo?.activeSubscriptions.includes(typeOfMembership.yearly) ||
-    customerInfo?.activeSubscriptions.includes(typeOfMembership.weekly);
+        customerInfo?.activeSubscriptions.includes(typeOfMembership.monthly) ||
+        customerInfo?.activeSubscriptions.includes(typeOfMembership.yearly) ||
+        customerInfo?.activeSubscriptions.includes(typeOfMembership.weekly);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -40,16 +40,16 @@ function useRevenueCat() {
 
         fetchData().catch(console.error);
     }, [])
-    
+
     useEffect(() => {
-        const customerInfoUpdated = async(purchasesInfo: CustomerInfo) => {
-            setCustomerInfo(purchasesInfo) 
+        const customerInfoUpdated = async (purchasesInfo: CustomerInfo) => {
+            setCustomerInfo(purchasesInfo)
         }
 
         Purchases.addCustomerInfoUpdateListener(customerInfoUpdated)
     }, [])
-    
+
     return { currentOffering, customerInfo, isProMember }
-}  
+}
 
 export default useRevenueCat;

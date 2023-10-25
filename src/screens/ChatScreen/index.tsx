@@ -19,7 +19,6 @@ export default function ChatScreen({ navigation }: any) {
   const [messageCount, setMessageCount] = useState(10);
   const [modelVersion, setModelVersion] = useState('GPT-3');
   const [favoriteMessages, setFavoriteMessages] = useState([]);
-  //const [attachedFiles, setAttachedFiles] = useState([]);
   const inputRef = useRef(null);
   const modalizeRef = useRef<Modalize>(null);
   const { isProMember } = useRevenueCat();
@@ -42,7 +41,7 @@ export default function ChatScreen({ navigation }: any) {
       } else {
         setFavoriteMessages((prevFavMessages) => [...prevFavMessages, message]);
       }
-  
+
       // Actualiza los mensajes con el nuevo estado de favoritos
       setMessages((prevMessages) =>
         prevMessages.map((msg) => {
@@ -53,7 +52,7 @@ export default function ChatScreen({ navigation }: any) {
         })
       );
     }
-  };  
+  };
 
   const clearConversation = async () => {
     Alert.alert(
@@ -104,9 +103,8 @@ export default function ChatScreen({ navigation }: any) {
       setFavoriteMessages(JSON.parse(storedFavoriteMessages));
     }
   }
-  
+
   useEffect(() => {
-    // ... otras funciones de carga
     loadFavoriteMessages();
   }, []);
 
@@ -145,7 +143,7 @@ export default function ChatScreen({ navigation }: any) {
       });
       setMessages(updatedMessages);
     }
-  }  
+  }
 
   async function loadMessageCount() {
     const storedMessageCount = await AsyncStorage.getItem('messageCount');
@@ -191,29 +189,6 @@ export default function ChatScreen({ navigation }: any) {
     checkAndResetDailyMessageCount();
   }, []);
 
-  /* useEffect(() => {
-    if (!isProMember) {
-      navigation.setOptions({
-        headerRight: () => {
-          return (
-            <>
-              <TouchableOpacity onPress={onOpen}>
-                <Ionicons name="chatbubble" size={24} color="white">
-                  <Text>{messageCount}</Text>
-                </Ionicons>
-              </TouchableOpacity>
-            </>
-          );
-        },
-      });
-    } else {
-      // Si el usuario es miembro Pro, eliminar el headerRight
-      navigation.setOptions({
-        headerRight: () => null,
-      });
-    }
-  }, [isProMember, messageCount]); */
-
   useEffect(() => {
     navigation.setOptions({
       headerTitle: () => {
@@ -243,7 +218,6 @@ export default function ChatScreen({ navigation }: any) {
     );
     setIsLoading(true);
     const response = modelVersion === 'GPT-4' ? await chatGPT4(newMessages) : await chatGPT(newMessages);
-    //const response = await chatGPT4(newMessages);
     setMessages((previousMessages: { _id: string; text: string; createdAt: Date; user: { _id: number; name: string; avatar: any; }; }[] | undefined) =>
       GiftedChat.append(previousMessages, [
         {
@@ -389,7 +363,7 @@ export default function ChatScreen({ navigation }: any) {
               </TouchableOpacity>
             )}
           </View>
-        )}                
+        )}
         renderComposer={(props) => <Composer {...props} textInputStyle={[styles.composerTextInput, { maxHeight: maxHeight }]} multiline />}
         renderInputToolbar={(props) => <InputToolbar {...props} containerStyle={styles.inputTool} />}
         renderAvatar={(props) => (

@@ -25,7 +25,7 @@ const ConfigurationScreen = ({ navigation }: any) => {
 
     const openStoreReview = () => {
         if (Platform.OS === 'ios') {
-            Linking.openURL('itms-apps://itunes.apple.com/app/id6446496807?mt=8&action=write-review');
+            //Linking.openURL('itms-apps://itunes.apple.com/app/id6446496807?mt=8&action=write-review');
         } else {
             //Linking.openURL('market://details?id=nombre_de_tu_app');
         }

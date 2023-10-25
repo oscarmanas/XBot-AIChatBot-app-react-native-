@@ -12,7 +12,7 @@ const WelcomeScreen = ({ navigation }) => {
   }, [navigation]);
 
   return (
-    <ScrollView style={{ backgroundColor: "#1C1C1E"}} contentContainerStyle={styles.container}>
+    <ScrollView style={{ backgroundColor: "#1C1C1E" }} contentContainerStyle={styles.container}>
       <Text style={styles.title}>{i18n.t('iAm')}</Text>
       <Text style={styles.subtitle}>{i18n.t('presentation')}</Text>
       <Image resizeMode="contain" style={styles.images} source={require('../../assets/images/photo/photo_01.png')} />

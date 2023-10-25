@@ -8,7 +8,6 @@ import ChatScreen from '../screens/ChatScreen';
 import ConfigurationScreen from '../screens/ConfigurationScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ActivityIndicator, View } from 'react-native';
-import { useTheme } from '../util/theme';
 import TermsScreen from '../screens/TermsScreen/TermsScreen';
 import PrivacityScreen from '../screens/PrivacityScreen/PrivacityScreen';
 
@@ -16,7 +15,6 @@ const Router = () => {
     const Stack = createNativeStackNavigator()
     const [chooseScreen, setChooseScreen] = useState("");
 
-    const theme = useTheme();
 
     const isNewUser = async () => {
         const newUser = await AsyncStorage.getItem("WelcomeScreen")
@@ -35,7 +33,7 @@ const Router = () => {
         );
     } else {
         return (
-            <NavigationContainer theme={theme}>
+            <NavigationContainer>
                 <Stack.Navigator initialRouteName={chooseScreen}>
                     <Stack.Screen
                         name="Welcome"

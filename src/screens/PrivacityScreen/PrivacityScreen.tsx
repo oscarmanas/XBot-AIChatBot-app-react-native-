@@ -20,7 +20,7 @@ export default function PrivacityScreen() {
       source={{ uri: "https://privacy-xbot.carrd.co" }}
       renderLoading={IndicatorLoadingView}
       startInLoadingState={true}
-      style={{backgroundColor:'black'}}
+      style={{ backgroundColor: 'black' }}
     />
   );
 }
