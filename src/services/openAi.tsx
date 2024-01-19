@@ -1,4 +1,5 @@
 import OpenAI from 'openai-api';
+import i18n from 'i18n-js';
 
 const OPENAI_API_KEY = '';
 
@@ -17,6 +18,6 @@ export default async function chatGPT(message: any) {
         return choices[0].text.trim();
     } catch (error) {
         console.log('Error in chatGPT:', error);
-        return 'Sorry, I am not able to respond at the moment.';
+        return i18n.t('errorMessage');
     }
 }
