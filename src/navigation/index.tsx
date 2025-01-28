@@ -8,8 +8,7 @@ import ChatScreen from '../screens/ChatScreen';
 import ConfigurationScreen from '../screens/ConfigurationScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ActivityIndicator, View } from 'react-native';
-import TermsScreen from '../screens/TermsScreen/TermsScreen';
-import PrivacityScreen from '../screens/PrivacityScreen/PrivacityScreen';
+import OpenBrowserScreen from '../screens/OpenBrowserScreen/OpenBrowserScreen';
 
 const Router = () => {
     const Stack = createNativeStackNavigator()
@@ -68,20 +67,11 @@ const Router = () => {
                         }}
                     />
                     <Stack.Screen
-                        name="Terms"
-                        component={TermsScreen}
+                        name="OpenBrowser"
+                        component={OpenBrowserScreen}
                         options={{
-                            title: `${i18n.t('termsConditions')}`,
-                            headerTintColor: 'white',
-                            headerStyle: { backgroundColor: '#0A0A0A' },
-                            headerShadowVisible: false
-                        }}
-                    />
-                    <Stack.Screen
-                        name="Privacy"
-                        component={PrivacityScreen}
-                        options={{
-                            title: `${i18n.t('privacityPolicy')}`,
+                            title: ``,
+                            headerTitleStyle: { fontFamily: "Poppins_700Bold", fontSize: 16 },
                             headerTintColor: 'white',
                             headerStyle: { backgroundColor: '#0A0A0A' },
                             headerShadowVisible: false

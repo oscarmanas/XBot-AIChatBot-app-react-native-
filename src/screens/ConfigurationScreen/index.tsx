@@ -13,7 +13,7 @@ const ConfigurationScreen = ({ navigation }: any) => {
         navigation.goBack()
     };
 
-    const shareContent = async () => {
+    /* const shareContent = async () => {
         try {
             await Share.share({
                 url: 'https://apps.apple.com/es/app/xbot-ai-chatbot/id6446496807',
@@ -21,15 +21,15 @@ const ConfigurationScreen = ({ navigation }: any) => {
         } catch (error) {
             //console.log(error.message);
         }
-    };
+    }; */
 
-    const openStoreReview = () => {
+    /* const openStoreReview = () => {
         if (Platform.OS === 'ios') {
             //Linking.openURL('itms-apps://itunes.apple.com/app/id6446496807?mt=8&action=write-review');
         } else {
             //Linking.openURL('market://details?id=nombre_de_tu_app');
         }
-    };
+    }; */
 
     useEffect(() => {
         navigation.setOptions({
@@ -43,11 +43,11 @@ const ConfigurationScreen = ({ navigation }: any) => {
         });
     }, [])
 
-    const handleNavPlan = () => {
+    /* const handleNavPlan = () => {
         navigation.navigate('Subscription')
-    }
+    } */
 
-    const handleRestorePurchases = async () => {
+    /* const handleRestorePurchases = async () => {
 
         const purchasesInfo = await Purchases.restorePurchases();
 
@@ -56,7 +56,7 @@ const ConfigurationScreen = ({ navigation }: any) => {
         } else {
             Alert.alert(i18n.t('error'), i18n.t('noRestored'))
         }
-    }
+    } */
 
     if (loading) {
         return (
@@ -71,27 +71,27 @@ const ConfigurationScreen = ({ navigation }: any) => {
                     <Text style={styles.textLeft}>{i18n.t('version')}</Text>
                     <Text style={styles.textRight}>1.1</Text>
                 </View>
-                <Pressable style={styles.section} onPress={() => handleNavPlan()}>
+                {/* <Pressable style={styles.section} onPress={() => handleNavPlan()}>
                     <Text style={styles.textLeft}>{i18n.t('myPlan')}</Text>
                     <FontAwesome name="angle-right" size={25} color="white" style={{ marginRight: 5 }} />
-                </Pressable>
-                <Pressable style={styles.section} onPress={() => shareContent()}>
+                </Pressable> */}
+                {/* <Pressable style={styles.section} onPress={() => shareContent()}>
                     <Text style={styles.textLeft}>{i18n.t('share')}</Text>
                     <FontAwesome name="angle-right" size={25} color="white" style={{ marginRight: 5 }} />
-                </Pressable>
-                <Pressable style={styles.section} onPress={() => openStoreReview()}>
+                </Pressable> */}
+                {/* <Pressable style={styles.section} onPress={() => openStoreReview()}>
                     <Text style={styles.textLeft}>{i18n.t('review')}</Text>
                     <FontAwesome name="angle-right" size={25} color="white" style={{ marginRight: 5 }} />
-                </Pressable>
-                <Pressable style={styles.section} onPress={() => handleRestorePurchases()}>
+                </Pressable> */}
+                {/* <Pressable style={styles.section} onPress={() => handleRestorePurchases()}>
                     <Text style={styles.textLeft}>{i18n.t('restorePurchases')}</Text>
                     <FontAwesome name="angle-right" size={25} color="white" style={{ marginRight: 5 }} />
-                </Pressable>
-                <Pressable style={styles.section} onPress={() => navigation.navigate('Privacy')}>
-                    <Text style={styles.textLeft}>{i18n.t('privacityPolicy')}</Text>
+                </Pressable> */}
+                <Pressable style={styles.section} onPress={() => navigation.navigate('OpenBrowser', { link: "privacy", title: "privacyPolicy"})}>
+                    <Text style={styles.textLeft}>{i18n.t('privacyPolicy')}</Text>
                     <FontAwesome name="angle-right" size={25} color="white" style={{ marginRight: 5 }} />
                 </Pressable>
-                <Pressable style={styles.section} onPress={() => navigation.navigate('Terms')}>
+                <Pressable style={styles.section} onPress={() => navigation.navigate('OpenBrowser', { link: "terms", title: "termsConditions"})}>
                     <Text style={styles.textLeft}>{i18n.t('termsConditions')}</Text>
                     <FontAwesome name="angle-right" size={25} color="white" style={{ marginRight: 5 }} />
                 </Pressable>

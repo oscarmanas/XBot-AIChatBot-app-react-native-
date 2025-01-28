@@ -60,6 +60,7 @@ export const styles = StyleSheet.create({
     borderTopWidth: 0,
     flexDirection: "row",
     alignItems: "center",
+    height: 100,
     paddingHorizontal: 15,
   },
   exampleList: {

@@ -8,7 +8,8 @@ import { ScrollView } from 'react-native';
 const WelcomeScreen = ({ navigation }) => {
   const handleNextPage = useCallback(async () => {
     await AsyncStorage.setItem('WelcomeScreen', 'Visit');
-    navigation.navigate('Subscription');
+    //navigation.navigate('Subscription');
+    navigation.navigate('Chat')
   }, [navigation]);
 
   return (
@@ -19,11 +20,11 @@ const WelcomeScreen = ({ navigation }) => {
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         <Text style={{ color: 'white', marginBottom: 10 }}>{i18n.t('continue')}</Text>
         <View style={{ flexDirection: 'row' }}>
-          <Pressable onPress={() => navigation.navigate("Privacy")}>
-            <Text style={{ color: 'white', fontWeight: 'bold' }}>{i18n.t('privacityPolicy')}</Text>
+          <Pressable onPress={() => navigation.navigate('OpenBrowser', { link: "privacy", title: "privacyPolicy"})}>
+            <Text style={{ color: 'white', fontWeight: 'bold' }}>{i18n.t('privacyPolicy')}</Text>
           </Pressable>
           <Text style={{ color: 'white' }}> & </Text>
-          <Pressable onPress={() => navigation.navigate("Terms")}>
+          <Pressable onPress={() => navigation.navigate('OpenBrowser', { link: "terms", title: "termsConditions"})}>
             <Text style={{ color: 'white', fontWeight: 'bold' }}>{i18n.t('termsConditions')}</Text>
           </Pressable>
         </View>

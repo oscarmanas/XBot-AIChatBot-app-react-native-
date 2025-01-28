@@ -1,20 +1,19 @@
-import { Configuration, OpenAIApi } from 'openai';
 import i18n from 'i18n-js';
+import OpenAI from 'openai';
 
-const configuration = new Configuration({
-    apiKey: "",
+const openai = new OpenAI({
+    apiKey: `${process.env.OPENAI_API_KEY}`,
 });
-const openai = new OpenAIApi(configuration);
 
-export default async function chatGPT4(message: any) {
+export default async function chatGPT4(message: any, model: string) {
     try {
-        const response = await openai.createChatCompletion({
-            model: "gpt-4-0314",
+        const response = openai.chat.completions.create({
+            model: model,
             messages: [{ role: 'user', content: message }],
-            max_tokens: 2048,
-            temperature: 0.6
+            max_tokens: 1024,
+            temperature: 0.5
         })
-        return response.data.choices[0].message.content;
+        return (await response).choices[0].message.content
     } catch (error) {
         console.log('Error in chatGPT:', error);
         return i18n.t('errorMessage');

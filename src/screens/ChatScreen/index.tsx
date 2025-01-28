@@ -6,31 +6,33 @@ import { Ionicons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import { styles } from './styles';
 import useConnection from '../../hooks/useConnection';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Modalize } from 'react-native-modalize';
+//import AsyncStorage from '@react-native-async-storage/async-storage';
+//import { Modalize } from 'react-native-modalize';
 import chatGPT4 from '../../services/openAi4';
 import chatGPT from '../../services/openAi';
-import useRevenueCat from '../../hooks/useRevenueCat';
+//import useRevenueCat from '../../hooks/useRevenueCat';
 
 export default function ChatScreen({ navigation }: any) {
   const [messages, setMessages]: any = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [newMessage, setNewMessage] = useState('');
-  const [messageCount, setMessageCount] = useState(10);
-  const [modelVersion, setModelVersion] = useState('GPT-3');
-  const [favoriteMessages, setFavoriteMessages] = useState([]);
-  const inputRef = useRef(null);
-  const modalizeRef = useRef<Modalize>(null);
-  const { isProMember } = useRevenueCat();
+  //const [messageCount, setMessageCount] = useState(10);
+  const [modelVersion, setModelVersion] = useState("gpt-4o-mini");
+  //const [favoriteMessages, setFavoriteMessages] = useState([]);
+  //const inputRef = useRef(null);
+  //const modalizeRef = useRef<Modalize>(null);
+  //const { isProMember } = useRevenueCat();
   const maxHeight = Dimensions.get('window').height * 0.2;
   const is_connected = async () => await useConnection();
 
-  const onOpen = () => {
+  const models = ["gpt-4o-mini", "gpt-4o", "o1-mini", "o1"]
+
+  /* const onOpen = () => {
     inputRef.current?.textInput?.blur();
     modalizeRef.current?.open();
-  };
+  }; */
 
-  const toggleFavorite = (message) => {
+  /* const toggleFavorite = (message) => {
     if (message.user._id === 2) {
       const isFavorite = favoriteMessages.some((msg) => msg._id === message._id);
       console.log(isFavorite)
@@ -52,9 +54,9 @@ export default function ChatScreen({ navigation }: any) {
         })
       );
     }
-  };
+  }; */
 
-  const clearConversation = async () => {
+  /* const clearConversation = async () => {
     Alert.alert(
       i18n.t('clearConversationTitle'),
       i18n.t('clearConversationText'),
@@ -74,10 +76,10 @@ export default function ChatScreen({ navigation }: any) {
       ],
       { cancelable: false },
     );
-  };
+  }; */
 
   // Crea el componente personalizado HeaderRightButtons
-  const HeaderRightButtons = () => {
+  /* const HeaderRightButtons = () => {
     return (
       <View style={{ flexDirection: 'row' }}>
         {messages.length === 0 ?
@@ -86,7 +88,7 @@ export default function ChatScreen({ navigation }: any) {
             <Ionicons name="trash" size={24} color="white" />
           </TouchableOpacity>
         }
-        {!isProMember && (
+        {/* {!isProMember && (
           <TouchableOpacity onPress={onOpen}>
             <Ionicons name="chatbubble" size={24} color="white">
               <Text>{messageCount}</Text>
@@ -95,21 +97,21 @@ export default function ChatScreen({ navigation }: any) {
         )}
       </View>
     );
-  };
+  }; */
 
-  async function loadFavoriteMessages() {
+  /* async function loadFavoriteMessages() {
     const storedFavoriteMessages = await AsyncStorage.getItem('favoriteMessages');
     if (storedFavoriteMessages) {
       setFavoriteMessages(JSON.parse(storedFavoriteMessages));
     }
-  }
+  } */
 
-  useEffect(() => {
+  /* useEffect(() => {
     loadFavoriteMessages();
-  }, []);
+  }, []); */
 
   // Modifica la función useEffect que maneja el contador de mensajes
-  useEffect(() => {
+  /* useEffect(() => {
     if (!isProMember) {
       navigation.setOptions({
         headerRight: () => <HeaderRightButtons />,
@@ -120,44 +122,46 @@ export default function ChatScreen({ navigation }: any) {
         headerRight: () => null,
       });
     }
-  }, [isProMember, messageCount, messages]);
+  }, [isProMember, /* messageCount,  messages]); */
 
-  useEffect(() => {
+  /* useEffect(() => {
     AsyncStorage.setItem('favoriteMessages', JSON.stringify(favoriteMessages));
-  }, [favoriteMessages]);
+  }, [favoriteMessages]); */
 
   const switchModelVersion = () => {
-    setModelVersion(modelVersion === 'GPT-4' ? 'GPT-3' : 'GPT-4');
+    const currentIndex = models.indexOf(modelVersion);
+    const nextIndex = (currentIndex + 1) % models.length;
+    setModelVersion(models[nextIndex]);
   };
 
-  async function loadMessages() {
+  /* async function loadMessages() {
     const storedMessages = await AsyncStorage.getItem('messages');
     if (storedMessages) {
       const parsedMessages = JSON.parse(storedMessages);
       const updatedMessages = parsedMessages.map((msg) => {
         if (msg.user._id === 2) {
-          const isFavorite = favoriteMessages.some((favMsg) => favMsg._id === msg._id);
+          //const isFavorite = favoriteMessages.some((favMsg) => favMsg._id === msg._id);
           return { ...msg, isFavorite };
         }
         return msg;
       });
       setMessages(updatedMessages);
     }
-  }
+  } */
 
-  async function loadMessageCount() {
+  /* async function loadMessageCount() {
     const storedMessageCount = await AsyncStorage.getItem('messageCount');
     if (storedMessageCount) {
       setMessageCount(parseInt(storedMessageCount));
     }
-  }
+  } */
 
-  const resetDailyMessageCount = async () => {
+  /* const resetDailyMessageCount = async () => {
     setMessageCount(10);
     await AsyncStorage.setItem('messageCount', '10');
-  }
+  } */
 
-  const checkAndResetDailyMessageCount = async () => {
+  /* const checkAndResetDailyMessageCount = async () => {
     const lastResetDate = await AsyncStorage.getItem('lastResetDate');
     const today = new Date().toDateString();
 
@@ -165,11 +169,11 @@ export default function ChatScreen({ navigation }: any) {
       await AsyncStorage.setItem('lastResetDate', today);
       resetDailyMessageCount();
     }
-  }
+  } */
 
   const handleBurgerNavigation = () => navigation.navigate('Configuration');
 
-  const handlePayNavigation = () => navigation.navigate('Subscription');
+  //const handlePayNavigation = () => navigation.navigate('Subscription');
 
   useEffect(() => {
     navigation.setOptions({
@@ -184,9 +188,9 @@ export default function ChatScreen({ navigation }: any) {
     if (!is_connected) {
       Alert.alert(`${i18n.t('noInternet')}`);
     }
-    loadMessages();
-    loadMessageCount();
-    checkAndResetDailyMessageCount();
+    //loadMessages();
+    //loadMessageCount();
+    //checkAndResetDailyMessageCount();
   }, []);
 
   useEffect(() => {
@@ -217,7 +221,7 @@ export default function ChatScreen({ navigation }: any) {
       ])
     );
     setIsLoading(true);
-    const response = modelVersion === 'GPT-4' ? await chatGPT4(newMessages) : await chatGPT(newMessages);
+    const response = await chatGPT4(newMessages, modelVersion);
     setMessages((previousMessages: { _id: string; text: string; createdAt: Date; user: { _id: number; name: string; avatar: any; }; }[] | undefined) =>
       GiftedChat.append(previousMessages, [
         {
@@ -234,7 +238,7 @@ export default function ChatScreen({ navigation }: any) {
     );
 
     // Save messages to AsyncStorage
-    const messagesToSave = GiftedChat.append(messages, [
+    /* const messagesToSave = GiftedChat.append(messages, [
       {
         _id: newMessageId + 1,
         text: response,
@@ -254,11 +258,11 @@ export default function ChatScreen({ navigation }: any) {
         }
       },
     ]);
-    await AsyncStorage.setItem('messages', JSON.stringify(messagesToSave));
+    await AsyncStorage.setItem('messages', JSON.stringify(messagesToSave)); */
     setIsLoading(false);
 
     // Update message count and save to AsyncStorage
-    if (!isProMember) {
+    /* if (!isProMember) {
       const newMessageCount = messageCount - 1;
       setMessageCount(newMessageCount);
       await AsyncStorage.setItem('messageCount', newMessageCount.toString());
@@ -266,8 +270,8 @@ export default function ChatScreen({ navigation }: any) {
       if (newMessageCount == 0) {
         Alert.alert(`${i18n.t('limitTitle')}`, `${i18n.t('limitText')}`);
       }
-    }
-  }, [messages, messageCount, modelVersion]);
+    } */
+  }, [messages, /* messageCount, */ modelVersion]);
 
   const handleSend = async (text: string | string[] | undefined) => {
     onSend(text);
@@ -276,7 +280,7 @@ export default function ChatScreen({ navigation }: any) {
 
   return (
     <View style={styles.container}>
-      <Modalize
+      {/* <Modalize
         ref={modalizeRef}
         modalHeight={300}
         modalStyle={{ backgroundColor: '#333333' }}
@@ -302,15 +306,15 @@ export default function ChatScreen({ navigation }: any) {
             </Pressable>
           </>
         }
-      </Modalize>
+      </Modalize> */}
       <GiftedChat
         messages={messages}
-        ref={inputRef}
+        //ref={inputRef}
         onSend={(newMessages) => onSend(newMessages)}
         user={{
           _id: 1,
         }}
-        disableComposer={messageCount == 0 ? true : false}
+        //disableComposer={messageCount == 0 ? true : false}
         isTyping={isLoading}
         placeholder={i18n.t('question')}
         scrollToBottom
@@ -322,7 +326,7 @@ export default function ChatScreen({ navigation }: any) {
             onPress={() => handleSend(props.text.trim())}
             disabled={!props.text}
           >
-            <Ionicons name="md-send" size={24} color="#F0433A" />
+            <Ionicons name="send" size={24} color="#F0433A" />
           </TouchableOpacity>
         )}
         renderBubble={(props) => (
@@ -346,7 +350,7 @@ export default function ChatScreen({ navigation }: any) {
                 },
               }}
             />
-            {props.currentMessage.user._id === 2 && (
+            {/* {props.currentMessage.user._id === 2 && (
               <TouchableOpacity
                 style={styles.heartIconContainer}
                 onPress={() => toggleFavorite(props.currentMessage)}
@@ -361,10 +365,10 @@ export default function ChatScreen({ navigation }: any) {
                   color="white"
                 />
               </TouchableOpacity>
-            )}
+            )} */}
           </View>
         )}
-        renderComposer={(props) => <Composer {...props} textInputStyle={[styles.composerTextInput, { maxHeight: maxHeight }]} multiline />}
+        renderComposer={(props) => <Composer {...props} textInputStyle={[styles.composerTextInput, { maxHeight: maxHeight * 2 }]} multiline />}
         renderInputToolbar={(props) => <InputToolbar {...props} containerStyle={styles.inputTool} />}
         renderAvatar={(props) => (
           <Avatar
