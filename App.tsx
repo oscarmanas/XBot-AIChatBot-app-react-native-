@@ -7,6 +7,7 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ca, en, es } from './src/assets/value';
 import Router from './src/navigation';
+import { ModelProvider } from './src/context/ModelContext';
 
 //This get the language Device and set the app in your local language
 i18n.fallbacks = true;
@@ -20,7 +21,9 @@ i18n.locale = lang
 export default function App() {
   return (
     <SafeAreaProvider>
+      <ModelProvider>
       <Router />
+      </ModelProvider>
       <StatusBar style="light" />
     </SafeAreaProvider>
   );

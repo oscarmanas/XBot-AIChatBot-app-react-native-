@@ -30,6 +30,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginVertical: 5,
+    marginBottom: 35
   },
   modalText: {
     marginTop: 10,
@@ -60,8 +61,9 @@ export const styles = StyleSheet.create({
     borderTopWidth: 0,
     flexDirection: "row",
     alignItems: "center",
-    height: 100,
     paddingHorizontal: 15,
+    minHeight: 60,
+    paddingBottom: 10,
   },
   exampleList: {
     flexGrow: 1,

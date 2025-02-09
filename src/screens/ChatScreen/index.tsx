@@ -1,7 +1,7 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import i18n from 'i18n-js';
-import { View, TouchableOpacity, Alert, Text, Pressable, Dimensions } from 'react-native';
-import { Avatar, Bubble, Composer, GiftedChat, InputToolbar } from 'react-native-gifted-chat';
+import { View, TouchableOpacity, Alert, Text, Dimensions, Platform } from 'react-native';
+import { Avatar, Bubble, Composer, GiftedChat, IMessage, InputToolbar } from 'react-native-gifted-chat';
 import { Ionicons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import { styles } from './styles';
@@ -9,7 +9,8 @@ import useConnection from '../../hooks/useConnection';
 //import AsyncStorage from '@react-native-async-storage/async-storage';
 //import { Modalize } from 'react-native-modalize';
 import chatGPT4 from '../../services/openAi4';
-import chatGPT from '../../services/openAi';
+import { useModel } from '../../context/ModelContext';
+import deepSeek from '../../services/deepseek';
 //import useRevenueCat from '../../hooks/useRevenueCat';
 
 export default function ChatScreen({ navigation }: any) {
@@ -17,7 +18,7 @@ export default function ChatScreen({ navigation }: any) {
   const [isLoading, setIsLoading] = useState(false);
   const [newMessage, setNewMessage] = useState('');
   //const [messageCount, setMessageCount] = useState(10);
-  const [modelVersion, setModelVersion] = useState("gpt-4o-mini");
+  const { modelVersion } = useModel();
   //const [favoriteMessages, setFavoriteMessages] = useState([]);
   //const inputRef = useRef(null);
   //const modalizeRef = useRef<Modalize>(null);
@@ -128,11 +129,11 @@ export default function ChatScreen({ navigation }: any) {
     AsyncStorage.setItem('favoriteMessages', JSON.stringify(favoriteMessages));
   }, [favoriteMessages]); */
 
-  const switchModelVersion = () => {
+  /* const switchModelVersion = () => {
     const currentIndex = models.indexOf(modelVersion);
     const nextIndex = (currentIndex + 1) % models.length;
     setModelVersion(models[nextIndex]);
-  };
+  }; */
 
   /* async function loadMessages() {
     const storedMessages = await AsyncStorage.getItem('messages');
@@ -173,6 +174,8 @@ export default function ChatScreen({ navigation }: any) {
 
   const handleBurgerNavigation = () => navigation.navigate('Configuration');
 
+  const handleModelNavigation = () => navigation.navigate('Models');
+
   //const handlePayNavigation = () => navigation.navigate('Subscription');
 
   useEffect(() => {
@@ -195,20 +198,19 @@ export default function ChatScreen({ navigation }: any) {
 
   useEffect(() => {
     navigation.setOptions({
-      headerTitle: () => {
-        return (
-          <TouchableOpacity style={{ backgroundColor: '#333333', flexDirection: 'row', borderWidth: 1, borderColor: "white", padding: 10, borderRadius: 5 }} onPress={switchModelVersion}>
-            <Text style={{ color: 'white' }}>{i18n.t('model')}</Text>
-            <Text style={{ color: "white" }}>{modelVersion}</Text>
-          </TouchableOpacity>
-        );
-      },
+      headerTitle: () => (
+        <TouchableOpacity style={{ marginLeft: Platform.OS === "android" ? 60 : 0 }} onPress={handleModelNavigation}>
+          <Text style={{ color: 'white' }}>{modelVersion}</Text>
+        </TouchableOpacity>
+      ),
     });
   }, [modelVersion]);
 
   const onSend = useCallback(async (newMessages: string[] = []) => {
     const newMessageId = Math.random().toString(36).substring(7);
-    setMessages(previousMessages =>
+    const botMessageId = newMessageId + "_bot";
+
+    setMessages((previousMessages: IMessage[] | undefined) =>
       GiftedChat.append(previousMessages, [
         {
           _id: newMessageId,
@@ -220,13 +222,12 @@ export default function ChatScreen({ navigation }: any) {
         }
       ])
     );
-    setIsLoading(true);
-    const response = await chatGPT4(newMessages, modelVersion);
+
     setMessages((previousMessages: { _id: string; text: string; createdAt: Date; user: { _id: number; name: string; avatar: any; }; }[] | undefined) =>
       GiftedChat.append(previousMessages, [
         {
-          _id: newMessageId + 1,
-          text: response,
+          _id: botMessageId,
+          text: "",
           createdAt: new Date(),
           user: {
             _id: 2,
@@ -236,6 +237,20 @@ export default function ChatScreen({ navigation }: any) {
         }
       ])
     );
+
+    // Función para actualizar el mensaje del bot en tiempo real
+    const updateBotMessage = (chunk: string) => {
+      setMessages((previousMessages) =>
+        previousMessages.map((msg) =>
+          msg._id === botMessageId ? { ...msg, text: chunk } : msg
+        )
+      );
+    };
+
+    await deepSeek(newMessages, modelVersion, updateBotMessage, setIsLoading);
+    //setIsLoading(true);
+    //const response = modelVersion == "deepseek/deepseek-r1:free" ? await deepSeek(newMessages, modelVersion) : await chatGPT4(newMessages, modelVersion);
+
 
     // Save messages to AsyncStorage
     /* const messagesToSave = GiftedChat.append(messages, [
@@ -259,7 +274,7 @@ export default function ChatScreen({ navigation }: any) {
       },
     ]);
     await AsyncStorage.setItem('messages', JSON.stringify(messagesToSave)); */
-    setIsLoading(false);
+    //setIsLoading(false);
 
     // Update message count and save to AsyncStorage
     /* if (!isProMember) {
@@ -276,6 +291,74 @@ export default function ChatScreen({ navigation }: any) {
   const handleSend = async (text: string | string[] | undefined) => {
     onSend(text);
     setNewMessage('');
+  };
+
+  const formatText = (text: string) => {
+    // Dividir el texto en líneas
+    const lines = text.split('\n');
+
+    return lines.map((line, lineIndex) => {
+      // Verificar si la línea comienza con ###
+      const isLargeLine = line.startsWith('###');
+      const lineText = isLargeLine ? line.replace('###', '') : line;
+
+      // Expresión regular para detectar bloques envueltos en **
+      const boldRegex = /\*\*(.*?)\*\*/g;
+
+      // Dividir la línea en segmentos normales y segmentos en negrita
+      const segments = [];
+      let lastIndex = 0;
+      let match;
+
+      while ((match = boldRegex.exec(lineText)) !== null) {
+        // Agregar el texto normal antes del bloque en negrita
+        if (match.index > lastIndex) {
+          segments.push({
+            text: lineText.substring(lastIndex, match.index),
+            isBold: false,
+          });
+        }
+
+        // Agregar el texto en negrita
+        segments.push({
+          text: match[1], // El contenido dentro de los **
+          isBold: true,
+        });
+
+        // Actualizar el último índice
+        lastIndex = boldRegex.lastIndex;
+      }
+
+      // Agregar el texto normal restante después del último bloque en negrita
+      if (lastIndex < lineText.length) {
+        segments.push({
+          text: lineText.substring(lastIndex),
+          isBold: false,
+        });
+      }
+
+      return (
+        <Text
+          key={lineIndex}
+          style={{
+            color: 'white',
+            padding: 10,
+            fontSize: isLargeLine ? 20 : 16, // Tamaño más grande si es una línea con ###
+          }}
+        >
+          {segments.map((segment, segmentIndex) => (
+            <Text
+              key={segmentIndex}
+              style={{
+                fontWeight: segment.isBold ? 'bold' : 'normal', // Negrita si está envuelto en **
+              }}
+            >
+              {segment.text}
+            </Text>
+          ))}
+        </Text>
+      );
+    });
   };
 
   return (
@@ -349,6 +432,11 @@ export default function ChatScreen({ navigation }: any) {
                   color: 'white',
                 },
               }}
+              renderMessageText={(props) => (
+                <View>
+                  {formatText(props.currentMessage.text)}
+                </View>
+              )}
             />
             {/* {props.currentMessage.user._id === 2 && (
               <TouchableOpacity
@@ -368,7 +456,7 @@ export default function ChatScreen({ navigation }: any) {
             )} */}
           </View>
         )}
-        renderComposer={(props) => <Composer {...props} textInputStyle={[styles.composerTextInput, { maxHeight: maxHeight * 2 }]} multiline />}
+        renderComposer={(props) => <Composer {...props} textInputStyle={[styles.composerTextInput, { maxHeight: maxHeight * 3, minHeight: 50, marginBottom: 35 }]} multiline />}
         renderInputToolbar={(props) => <InputToolbar {...props} containerStyle={styles.inputTool} />}
         renderAvatar={(props) => (
           <Avatar
@@ -378,6 +466,7 @@ export default function ChatScreen({ navigation }: any) {
             imageStyle={{ width: 200, height: 200 }}
           />
         )}
+        keyboardShouldPersistTaps="handled"
       />
     </View>
   );

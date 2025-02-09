@@ -35,10 +35,12 @@ export const en = {
   noMoreMessages: "You don't have any more messages, don't worry tomorrow you will have 10 more. Upgrade your plan and you can have unlimited messages",
   haveMessages: "You can send the bot {messageCount} messages. If you want to have unlimited messages, upgrade your plan",
   model: "Model: ",
+  models: "Models",
   clearConversationTitle: "Clear Conversation",
   clearConversationText: "Are you sure you want to clear the conversation?",
   cancel: "Cancel",
-  confirm: "Confirm"
+  confirm: "Confirm",
+  selectModel: "Select a model"
 }
 
 /// CASTELLANO ///
@@ -78,10 +80,12 @@ export const es = {
   noMoreMessages: "No tienes más mensajes, no te preocupes mañana tendrás 10 más. Mejora tu plan y podrás tener mensajes ilimitados",
   haveMessages: "Puedes enviar al bot {messageCount} mensajes. Si quieres tener mensajes ilimitados mejora tu plan",
   model: "Modelo: ",
+  models: "Modelos",
   clearConversationTitle: "Borrar conversación",
   clearConversationText: "¿Estás seguro de que quieres borrar la conversación?",
   cancel: "Cancelar",
-  confirm: "Confirmar"
+  confirm: "Confirmar",
+  selectModel: "Selecciona un modelo"
 }
 
 /// CATALÀ ///
@@ -121,8 +125,10 @@ export const ca = {
   noMoreMessages: "No tens més missatges, no pateixis demà en tindràs 10 més. Millora el teu pla i podràs tenir missatges il·limitats",
   haveMessages: "Pots enviar al bot {messageCount} missatges. Si vols tenir missatges il·limitats millora el teu pla",
   model: "Model: ",
+  models: "Models",
   clearConversationTitle: "Esborrar conversa",
   clearConversationText: "Estàs segur que vols esborrar la conversa?",
   cancel: "Cancel·lar",
-  confirm: "Confirmar"
+  confirm: "Confirmar",
+  selectModel: "Selecciona un model"
 }

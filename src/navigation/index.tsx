@@ -9,6 +9,7 @@ import ConfigurationScreen from '../screens/ConfigurationScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ActivityIndicator, View } from 'react-native';
 import OpenBrowserScreen from '../screens/OpenBrowserScreen/OpenBrowserScreen';
+import ModelsScreen from '../screens/ModelsScreen';
 
 const Router = () => {
     const Stack = createNativeStackNavigator()
@@ -64,6 +65,17 @@ const Router = () => {
                             headerTintColor: 'black',
                             headerStyle: { backgroundColor: '#0A0A0A' },
                             headerShadowVisible: false
+                        }}
+                    />
+                    <Stack.Screen
+                        name="Models"
+                        component={ModelsScreen}
+                        options={{
+                            title: `${i18n.t('models')}`,
+                            headerTintColor: 'white',
+                            headerStyle: { backgroundColor: '#1C1C1E' },
+                            headerShadowVisible: false,
+                            presentation:"modal"
                         }}
                     />
                     <Stack.Screen

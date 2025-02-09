@@ -10,8 +10,8 @@ export default async function chatGPT4(message: any, model: string) {
         const response = openai.chat.completions.create({
             model: model,
             messages: [{ role: 'user', content: message }],
-            max_tokens: 1024,
-            temperature: 0.5
+            max_completion_tokens: 1024,
+            temperature: 1
         })
         return (await response).choices[0].message.content
     } catch (error) {

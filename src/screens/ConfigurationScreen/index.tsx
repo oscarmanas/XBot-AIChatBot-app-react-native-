@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import i18n from 'i18n-js';
-import { View, Text, TouchableOpacity, Pressable, Linking, Platform, Share, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, Pressable, Linking, Platform, Share, Alert, ActivityIndicator, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { styles } from './styles';
 import Purchases from 'react-native-purchases';
@@ -71,6 +71,14 @@ const ConfigurationScreen = ({ navigation }: any) => {
                     <Text style={styles.textLeft}>{i18n.t('version')}</Text>
                     <Text style={styles.textRight}>1.1</Text>
                 </View>
+                <Pressable style={styles.section} onPress={() => navigation.navigate('Models')}>
+                    <Text style={styles.textLeft}>{i18n.t('models')}</Text>
+                    <FontAwesome name="angle-right" size={25} color="white" style={{ marginRight: 5 }} />
+                </Pressable>
+                {/* <Pressable style={styles.section} onPress={() => navigation.navigate('OpenBrowser', { link: "privacy", title: "privacyPolicy"})}>
+                    <Text style={styles.textLeft}>{i18n.t('settings')}</Text>
+                    <FontAwesome name="angle-right" size={25} color="white" style={{ marginRight: 5 }} />
+                </Pressable> */}
                 {/* <Pressable style={styles.section} onPress={() => handleNavPlan()}>
                     <Text style={styles.textLeft}>{i18n.t('myPlan')}</Text>
                     <FontAwesome name="angle-right" size={25} color="white" style={{ marginRight: 5 }} />
