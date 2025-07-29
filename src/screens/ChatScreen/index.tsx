@@ -247,7 +247,11 @@ export default function ChatScreen({ navigation }: any) {
       );
     };
 
-    await deepSeek(newMessages, modelVersion, updateBotMessage, setIsLoading);
+    setIsLoading(true);
+    const finalResponse = await chatGPT4(newMessages, modelVersion);
+    updateBotMessage(finalResponse);
+    setIsLoading(false);
+    //await deepSeek(newMessages, modelVersion, updateBotMessage, setIsLoading);
     //setIsLoading(true);
     //const response = modelVersion == "deepseek/deepseek-r1:free" ? await deepSeek(newMessages, modelVersion) : await chatGPT4(newMessages, modelVersion);
 

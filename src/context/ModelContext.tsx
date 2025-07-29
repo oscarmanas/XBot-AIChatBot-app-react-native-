@@ -8,7 +8,7 @@ interface ModelContextType {
 const ModelContext = createContext<ModelContextType | undefined>(undefined);
 
 export const ModelProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [modelVersion, setModelVersion] = useState('deepseek/deepseek-r1:free');
+  const [modelVersion, setModelVersion] = useState('gpt-4o');
 
   return (
     <ModelContext.Provider value={{ modelVersion, setModelVersion }}>

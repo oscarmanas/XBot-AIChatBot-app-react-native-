@@ -5,7 +5,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { styles } from './styles';
 import { useModel } from '../../context/ModelContext';
 
-const models = [/* "gpt-4o-mini", "gpt-4o", "o1-mini", "o1", */ "deepseek/deepseek-r1:free"];
+const models = ["gpt-4o", "gpt-4.1"/* , "deepseek/deepseek-r1:free" */];
 
 const ModelsScreen = () => {
     const { modelVersion, setModelVersion } = useModel();
