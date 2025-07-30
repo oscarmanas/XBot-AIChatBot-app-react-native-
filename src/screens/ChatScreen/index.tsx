@@ -26,8 +26,6 @@ export default function ChatScreen({ navigation }: any) {
   const maxHeight = Dimensions.get('window').height * 0.2;
   const is_connected = async () => await useConnection();
 
-  const models = ["gpt-4o-mini", "gpt-4o", "o1-mini", "o1"]
-
   /* const onOpen = () => {
     inputRef.current?.textInput?.blur();
     modalizeRef.current?.open();
@@ -128,12 +126,6 @@ export default function ChatScreen({ navigation }: any) {
   /* useEffect(() => {
     AsyncStorage.setItem('favoriteMessages', JSON.stringify(favoriteMessages));
   }, [favoriteMessages]); */
-
-  /* const switchModelVersion = () => {
-    const currentIndex = models.indexOf(modelVersion);
-    const nextIndex = (currentIndex + 1) % models.length;
-    setModelVersion(models[nextIndex]);
-  }; */
 
   /* async function loadMessages() {
     const storedMessages = await AsyncStorage.getItem('messages');
@@ -346,8 +338,9 @@ export default function ChatScreen({ navigation }: any) {
           key={lineIndex}
           style={{
             color: 'white',
-            padding: 10,
-            fontSize: isLargeLine ? 20 : 16, // Tamaño más grande si es una línea con ###
+            padding: 5,
+            fontSize: isLargeLine ? 22 : 18, // Tamaño más grande si es una línea con ###
+            lineHeight: 26
           }}
         >
           {segments.map((segment, segmentIndex) => (
@@ -404,7 +397,6 @@ export default function ChatScreen({ navigation }: any) {
         //disableComposer={messageCount == 0 ? true : false}
         isTyping={isLoading}
         placeholder={i18n.t('question')}
-        scrollToBottom
         text={newMessage}
         onInputTextChanged={text => setNewMessage(text)}
         renderSend={(props) => (
@@ -416,50 +408,44 @@ export default function ChatScreen({ navigation }: any) {
             <Ionicons name="send" size={24} color="#F0433A" />
           </TouchableOpacity>
         )}
-        renderBubble={(props) => (
-          <View style={styles.bubbleContainer}>
-            <Bubble
-              {...props}
-              wrapperStyle={{
-                left: {
-                  backgroundColor: '#333333',
-                },
-                right: {
-                  backgroundColor: '#F0433A',
-                },
-              }}
-              textStyle={{
-                left: {
-                  color: 'white',
-                },
-                right: {
-                  color: 'white',
-                },
-              }}
-              renderMessageText={(props) => (
-                <View>
-                  {formatText(props.currentMessage.text)}
-                </View>
-              )}
-            />
-            {/* {props.currentMessage.user._id === 2 && (
-              <TouchableOpacity
-                style={styles.heartIconContainer}
-                onPress={() => toggleFavorite(props.currentMessage)}
-              >
-                <Ionicons
-                  name={
-                    props.currentMessage.isFavorite
-                      ? 'heart'
-                      : 'heart-outline'
-                  }
-                  size={20}
-                  color="white"
+        renderMessage={(props) => {
+          const isBot = props.currentMessage.user._id === 2;
+
+          if (isBot) {
+            return (
+              <View style={{ marginVertical: 10, paddingHorizontal: 10 }}>
+                {formatText(props.currentMessage.text)}
+              </View>
+            );
+          } else {
+            return (
+              <View style={styles.bubbleContainer}>
+                <Bubble
+                  {...props}
+                  wrapperStyle={{
+                    right: {
+                      backgroundColor: '#F0433A',
+                      padding: 10,
+                      borderRadius: 15,
+                      marginRight: 10,
+                      maxWidth: '60%',
+                    },
+                  }}
+                  textStyle={{
+                    right: {
+                      color: 'white',
+                    },
+                  }}
+                  renderMessageText={() => (
+                    <Text style={{ color: 'white', fontSize: 16 }}>
+                      {props.currentMessage.text}
+                    </Text>
+                  )}
                 />
-              </TouchableOpacity>
-            )} */}
-          </View>
-        )}
+              </View>
+            );
+          }
+        }}
         renderComposer={(props) => <Composer {...props} textInputStyle={[styles.composerTextInput, { maxHeight: maxHeight * 3, minHeight: 50, marginBottom: 35 }]} multiline />}
         renderInputToolbar={(props) => <InputToolbar {...props} containerStyle={styles.inputTool} />}
         renderAvatar={(props) => (

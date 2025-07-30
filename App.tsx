@@ -13,9 +13,6 @@ import { ModelProvider } from './src/context/ModelContext';
 i18n.fallbacks = true;
 i18n.translations = { en, es, ca };
 let lang = Localization.locale;
-if (lang.substring(0, 2) === 'eu' || lang.substring(0, 2) === 'gl') {
-  lang = 'es-ES';
-}
 i18n.locale = lang
 
 export default function App() {
